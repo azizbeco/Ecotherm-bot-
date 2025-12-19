@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_send_photo_button_for_saleorder_send_photo_button_for_saleorder,send_photo_button_for_saleorder.send_photo_button_for_saleorder,model_send_photo_button_for_saleorder_send_photo_button_for_saleorder,base.group_user,1,1,1,1

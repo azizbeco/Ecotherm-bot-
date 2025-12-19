@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="send_telegram_paid_invoice_form" model="ir.ui.view">
+            <field name="name">Send Telegram Paid Invoice</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[1]" position="inside">
+                    <field name="send_telegram_payment_invoice"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
