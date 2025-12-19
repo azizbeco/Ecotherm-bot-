@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "pdf2image",
-    'author': "My Company",
+    'name': "Odoo Telegram Notifications",
+    'summary': 'Send Sale, Invoice, Payment and Delivery updates to Telegram',
+    'category': 'Tools',
+    'author': "UIC GROUP",
     'version': '0.1',
 
     'depends': ['sale'],
 
     'data': [
-        # 'security/ir.model.access.csv',
         'data/sale_confirm.xml',
         'data/invoice_confirm.xml',
         'data/payment_invoice.xml',
