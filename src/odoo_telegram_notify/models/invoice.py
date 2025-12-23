@@ -1,4 +1,3 @@
-from pycparser.ply.yacc import error_count
 
 from odoo import models, fields, api
 import requests
