@@ -3,8 +3,6 @@ from pdf2image import convert_from_bytes
 import requests
 import os
 import tempfile
-from dotenv import load_dotenv
-load_dotenv()
 
 
 # TOKEN = os.environ.get('TOKEN')
@@ -58,6 +56,7 @@ class PDF2ImageConfig(models.Model):
             self.send_image_to_telegram(image_paths, caption=caption, token=token, chat_id=chat_id)
 
     def send_quote_to_telegram(self, caption=None):
+        global chat_id
         self.ensure_one()
         TOKEN = self.env['ir.config_parameter'].sudo().get_param('TOKEN')
         pdf_content = self.env['ir.actions.report']._render_qweb_pdf(
