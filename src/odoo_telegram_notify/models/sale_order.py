@@ -25,22 +25,18 @@ class PDF2ImageConfig(models.Model):
             raise ValueError("Telegram BOT TOKEN is not configured.")
 
         for order in quotes:
-            chat_id = order.partner_id.chat_id
-            message = f'Sale Quote Tasdiqlandi: {order.name}'
+            try:
+                chat_id = order.partner_id.chat_id
+                message = f'Sale Quote Tasdiqlandi: {order.name}'
 
-            pdf_content = self.env['ir.actions.report']._render_qweb_pdf(
-                report_ref='sale.action_report_saleorder',
-                res_ids=order.id
-            )[0]
-            order.pdf2image(pdf_content, caption=message, token=TOKEN, chat_id=chat_id)
-            order.sent_qoute = True
-
-
-
-
-
-
-
+                pdf_content = self.env['ir.actions.report']._render_qweb_pdf(
+                    report_ref='sale.action_report_saleorder',
+                    res_ids=order.id
+                )[0]
+                order.pdf2image(pdf_content, caption=message, token=TOKEN, chat_id=chat_id)
+                order.sent_qoute = True
+            except:
+                continue
 
 
 

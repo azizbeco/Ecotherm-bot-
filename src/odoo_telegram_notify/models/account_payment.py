@@ -20,18 +20,39 @@ class AccountPaymentRegister(models.Model):
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
         paid_invoice = self.env['account.payment'].search([
-            ('state', '=', 'paid'),
+            ('state', 'in', ['in_process','paid']),
             ('send_telegram_payment_invoice', '=', False),
         ])
+        
 
         error_count = 0
 
-        for invoice in paid_invoice:
+        for payment in paid_invoice:
             try:
-                chat_id = invoice.partner_id.chat_id
-                message = (f"💵 To'lov qabul qilindi: {invoice.name}\n\nMijoz: {invoice.partner_id.name}\n"
-                           f"To'lov usuli: {invoice.journal_id.name}\nTo'lov turi: {invoice.payment_method_line_id.name} \n❗️ Sana:  {invoice.date}\nTo'langan summa: {invoice.amount}"
-                           f"\nIzoh: {invoice.memo}")
+                chat_id = payment.partner_id.chat_id
+                residual_amount = payment.reconciled_invoice_ids.amount_residual
+
+                if not chat_id:
+                    continue
+                if payment.state == 'in_process':
+                    message = (f"💵 To'lov qabul qilindi!\n\n"
+                           f"Invoice: {payment.name}\n"
+                           f"Mijoz: {payment.partner_id.name}\n"
+                           f"To'langan summa: {payment.amount} {payment.currency_id.symbol}\n"
+                           f"Hozirgi qoldiq: {residual_amount} {payment.currency_id.symbol}\n"
+                           f"📅 Sana: {payment.date}\n"
+                           f"Izoh: {payment.memo or ''}")
+                elif payment.state == 'paid':
+                    message = (f"💵 To'lov qabul qilindi!\n\n"
+                           f"Invoice: {payment.name}\n"
+                           f"Mijoz: {payment.partner_id.name}\n"
+                           f"To'langan summa: {payment.amount} {payment.currency_id.symbol}\n"
+                           f"Hozirgi qoldiq: {residual_amount} {payment.currency_id.symbol}\n"
+                           f"📅 Sana: {payment.date}\n"
+                           f"Izoh: {payment.memo or ''}")
+                else:
+                    continue
+
                 data = {
                     'chat_id': chat_id,
                     'text': message
@@ -39,7 +60,7 @@ class AccountPaymentRegister(models.Model):
                 response = requests.post(url, data=data)
                 result = response.json()
                 if result.get('ok'):
-                    invoice.send_telegram_payment_invoice = True
+                    payment.send_telegram_payment_invoice = True
             except:
                 error_count += 1
         return True

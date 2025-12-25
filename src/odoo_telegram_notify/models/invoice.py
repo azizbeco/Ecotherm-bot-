@@ -16,6 +16,7 @@ class SendConfirmedReport(models.Model):
 
         posted_invoice = self.env['account.move'].search([
             ('state', '=', 'posted'),
+            ('move_type', '=', 'out_invoice'),
             ('send_telegram_posted_invoice', '=', False),
         ])
 
@@ -26,7 +27,7 @@ class SendConfirmedReport(models.Model):
                 chat_id = invoice.partner_id.chat_id
                 message = f"✅ Invoice tasqilandi: {invoice.name}\n\n❗️ Sana:  {invoice.invoice_date_due}\nTo'lanishi kerak bo'lgan summa:  {invoice.amount_total}"
 
-                data = {
+                data = { 	2.0
                     'chat_id': chat_id,
                     'text': message
                 }
