@@ -27,7 +27,7 @@ class SendConfirmedReport(models.Model):
                 chat_id = invoice.partner_id.chat_id
                 message = f"✅ Invoice tasqilandi: {invoice.name}\n\n❗️ Sana:  {invoice.invoice_date_due}\nTo'lanishi kerak bo'lgan summa:  {invoice.amount_total}"
 
-                data = { 	2.0
+                data = {
                     'chat_id': chat_id,
                     'text': message
                 }
